@@ -23,9 +23,9 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="#home" className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white font-bold text-sm">
-              IB
+              NT
             </div>
-            <span className="hidden font-bold sm:inline-block">IBS Team</span>
+            <span className="hidden font-bold sm:inline-block">NexusTally</span>
           </Link>
 
           {/* Centered Nav Links */}

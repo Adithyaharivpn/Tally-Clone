@@ -55,7 +55,7 @@ export default function ContactSection() {
             <div className="space-y-6">
               {[
                 { icon: <Phone className="w-5 h-5" />, title: "Call Us", lines: ["+91 98470 00000", "+91 98460 00000"] },
-                { icon: <Mail className="w-5 h-5" />, title: "Email Us", lines: ["sales@ibsteam.co.in"] },
+                { icon: <Mail className="w-5 h-5" />, title: "Email Us", lines: ["sales@nexustally.co.in"] },
                 { icon: <MapPin className="w-5 h-5" />, title: "Visit Us", lines: ["Kochi, Kerala, India"] },
                 { icon: <Clock className="w-5 h-5" />, title: "Working Hours", lines: ["Mon - Sat: 9:30 AM - 6:00 PM"] },
               ].map((item, i) => (

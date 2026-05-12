@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IBS Team — Tally Certified 5-Star Partner | TallyPrime Solutions",
+  title: "NexusTally — Tally Certified 5-Star Partner | TallyPrime Solutions",
   description:
     "Premier TallyPrime Sales, Implementation, Customization, Training & Support. Certified 5-Star Tally Partner serving 2000+ businesses across India.",
   keywords:
