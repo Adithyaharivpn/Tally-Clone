@@ -28,7 +28,7 @@ export const BackgroundRippleEffect = ({
       )}
     >
       <div className="relative h-full w-full overflow-hidden flex items-center justify-center">
-        <div className="pointer-events-none absolute inset-0 z-[2] h-full w-full overflow-hidden" />
+        <div className="pointer-events-none absolute inset-0 z-2 h-full w-full overflow-hidden" />
         <DivGrid
           key={`base-${rippleKey}`}
           className="mask-radial-from-20% mask-radial-at-top opacity-600"
@@ -92,7 +92,7 @@ const DivGrid = ({
   };
 
   return (
-    <div className={cn("relative z-[3] w-full h-full", className)} style={gridStyle}>
+    <div className={cn("relative z-3 w-full h-full", className)} style={gridStyle}>
       {cells.map((idx) => {
         const rowIdx = Math.floor(idx / cols);
         const colIdx = idx % cols;
