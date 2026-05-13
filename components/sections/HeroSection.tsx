@@ -1,6 +1,10 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 import { Button } from "@/components/ui/button";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import { MovingBorderButton } from "@/components/ui/moving-border";
@@ -10,10 +14,17 @@ export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!containerRef.current || !headlineRef.current) return;
 
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    const tl = gsap.timeline({ 
+      defaults: { ease: "power4.out" },
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%",
+        toggleActions: "play reverse play reverse",
+      }
+    });
 
     // Animate the badge
     tl.fromTo(
@@ -38,17 +49,20 @@ export default function HeroSection() {
       "-=0.4"
     );
 
-    // Animate the gradient span with a shimmer
-    tl.fromTo(
-      ".hero-gradient-text",
-      { backgroundSize: "200% 200%", backgroundPosition: "100% 50%" },
-      {
-        backgroundPosition: "0% 50%",
-        duration: 1.5,
-        ease: "power2.inOut",
-      },
-      "-=0.8"
-    );
+    // Optional: Add the gradient class dynamically or skip if you removed the element
+    const gradientText = containerRef.current.querySelector(".hero-gradient-text");
+    if (gradientText) {
+      tl.fromTo(
+        gradientText,
+        { backgroundSize: "200% 200%", backgroundPosition: "100% 50%" },
+        {
+          backgroundPosition: "0% 50%",
+          duration: 1.5,
+          ease: "power2.inOut",
+        },
+        "-=0.8"
+      );
+    }
 
     // Animate subtext
     tl.fromTo(
@@ -73,7 +87,7 @@ export default function HeroSection() {
       { opacity: 1, y: 0, duration: 0.6 },
       "-=0.3"
     );
-  }, []);
+  }, { scope: containerRef });
 
   return (
     <section

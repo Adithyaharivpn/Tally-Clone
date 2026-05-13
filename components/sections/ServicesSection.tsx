@@ -1,12 +1,13 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Settings, LifeBuoy, GraduationCap, Database, Monitor, Wrench } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const services = [
   { title: "Implementation & Setup", description: "Complete TallyPrime setup — installation, configuration, and go-live handholding for smooth, accurate accounting from day one.", icon: <Settings className="w-8 h-8" /> },
@@ -20,23 +21,36 @@ const services = [
 export default function ServicesSection() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!ref.current) return;
 
     // Decorative line wipe animation
     gsap.fromTo(".services-line",
       { scaleX: 0 },
       { scaleX: 1, duration: 1.2, ease: "power3.inOut",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" } }
+        scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" } }
     );
 
     // Header label slide in
-    gsap.fromTo(ref.current.querySelectorAll(".services-header"),
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, stagger: 0.1, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" } }
-    );
-  }, []);
+    const headers = ref.current.querySelectorAll(".services-header");
+    if (headers.length > 0) {
+      gsap.fromTo(headers,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, stagger: 0.1, duration: 0.7, ease: "power2.out",
+          scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" } }
+      );
+    }
+
+    // Animate the service cards rendered by HoverEffect
+    const cards = ref.current.querySelectorAll(".group");
+    if (cards.length > 0) {
+      gsap.fromTo(cards,
+        { opacity: 0, y: 40, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, stagger: 0.1, duration: 0.6, ease: "back.out(1.5)",
+          scrollTrigger: { trigger: ref.current, start: "top 65%", toggleActions: "play reverse play reverse" } }
+      );
+    }
+  }, { scope: ref });
 
   return (
     <section id="services" className="py-24 lg:py-32 bg-(--background)" ref={ref}>

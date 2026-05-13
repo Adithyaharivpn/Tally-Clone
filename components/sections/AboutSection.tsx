@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CheckCircle } from "lucide-react";
 
@@ -10,7 +11,7 @@ export default function AboutSection() {
   const ref = useRef<HTMLDivElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!ref.current) return;
     if (visualRef.current) {
       gsap.to(visualRef.current, {
@@ -18,26 +19,41 @@ export default function AboutSection() {
         scrollTrigger: { trigger: ref.current, start: "top bottom", end: "bottom top", scrub: 1.5 },
       });
     }
-    gsap.fromTo(ref.current.querySelectorAll(".about-anim"),
-      { opacity: 0, x: -40, skewX: -2 },
-      { opacity: 1, x: 0, skewX: 0, stagger: 0.1, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 75%" } }
-    );
-    const items = ref.current.querySelectorAll(".highlight-item");
-    items.forEach((item, i) => {
-      gsap.fromTo(item,
-        { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-        { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power3.inOut", delay: i * 0.12,
-          scrollTrigger: { trigger: item, start: "top 90%" } }
+    
+    const aboutAnims = ref.current.querySelectorAll(".about-anim");
+    if (aboutAnims.length > 0) {
+      gsap.fromTo(aboutAnims,
+        { opacity: 0, x: -40, skewX: -2 },
+        { opacity: 1, x: 0, skewX: 0, stagger: 0.1, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ref.current, start: "top 75%", toggleActions: "play reverse play reverse" } }
       );
-    });
-    gsap.fromTo(ref.current.querySelectorAll(".float-badge"),
-      { opacity: 0, scale: 0, rotate: -20 },
-      { opacity: 1, scale: 1, rotate: 0, stagger: 0.2, duration: 0.8, ease: "back.out(3)",
-        scrollTrigger: { trigger: ref.current, start: "top 70%" } }
-    );
-    gsap.to(".about-gradient-ring", { rotate: 360, duration: 20, repeat: -1, ease: "none" });
-  }, []);
+    }
+
+    const items = ref.current.querySelectorAll(".highlight-item");
+    if (items.length > 0) {
+      items.forEach((item, i) => {
+        gsap.fromTo(item,
+          { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power3.inOut", delay: i * 0.12,
+            scrollTrigger: { trigger: item, start: "top 90%", toggleActions: "play reverse play reverse" } }
+        );
+      });
+    }
+
+    const floatBadges = ref.current.querySelectorAll(".float-badge");
+    if (floatBadges.length > 0) {
+      gsap.fromTo(floatBadges,
+        { opacity: 0, scale: 0, rotate: -20 },
+        { opacity: 1, scale: 1, rotate: 0, stagger: 0.2, duration: 0.8, ease: "back.out(3)",
+          scrollTrigger: { trigger: ref.current, start: "top 70%", toggleActions: "play reverse play reverse" } }
+      );
+    }
+    
+    const gradientRing = ref.current.querySelector(".about-gradient-ring");
+    if (gradientRing) {
+      gsap.to(gradientRing, { rotate: 360, duration: 20, repeat: -1, ease: "none" });
+    }
+  }, { scope: ref });
 
   const highlights = [
     "Tally Certified Five-Star Sales & Solutions Partner",
