@@ -52,7 +52,7 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="about-anim relative h-full flex items-center justify-center lg:justify-start" ref={visualRef}>
-            <div className="relative w-full max-w-lg aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl border border-border/50 group">
+            <div className="relative w-full max-w-lg aspect-4/3 rounded-4xl overflow-hidden shadow-2xl border border-border/50 group">
               {/* Subtle overlay on hover */}
               <div className="absolute inset-0 bg-primary-600/0 group-hover:bg-primary-600/10 transition-colors duration-500 z-10" />
               <img 

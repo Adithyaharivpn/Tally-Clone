@@ -23,7 +23,7 @@ export const BackgroundBeams = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "absolute inset-0 flex items-center w-full justify-center overflow-hidden [mask-image:radial-gradient(ellipse_at_center,white,transparent)]",
+        "absolute inset-0 flex items-center w-full justify-center overflow-hidden mask-[radial-gradient(ellipse_at_center,white,transparent)]",
         className
       )}
     >
