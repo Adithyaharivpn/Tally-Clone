@@ -1,32 +1,39 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { ArrowRight } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function CTASection() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!ref.current) return;
 
-    gsap.fromTo(ref.current.querySelectorAll(".cta-anim"),
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, stagger: 0.15, duration: 0.9, ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" } }
-    );
+    const ctaAnims = ref.current.querySelectorAll(".cta-anim");
+    if (ctaAnims.length > 0) {
+      gsap.fromTo(ctaAnims,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.15, duration: 0.9, ease: "power3.out",
+          scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" } }
+      );
+    }
 
     // Scale-in animation for glow orbs
-    gsap.fromTo(ref.current.querySelectorAll(".cta-orb"),
-      { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 1, stagger: 0.2, duration: 1.5, ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 85%" } }
-    );
-  }, []);
+    const orbs = ref.current.querySelectorAll(".cta-orb");
+    if (orbs.length > 0) {
+      gsap.fromTo(orbs,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, stagger: 0.2, duration: 1.5, ease: "power2.out",
+          scrollTrigger: { trigger: ref.current, start: "top 85%", toggleActions: "play reverse play reverse" } }
+      );
+    }
+  }, { scope: ref });
 
   return (
     <section className="relative py-24 overflow-hidden" ref={ref}>

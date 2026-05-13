@@ -29,7 +29,7 @@ export default function ProductsSection() {
       gsap.fromTo(headerRef.current.querySelectorAll(".prod-header"),
         { opacity: 0, y: 40 },
         { opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: headerRef.current, start: "top 85%" } }
+          scrollTrigger: { trigger: headerRef.current, start: "top 85%", toggleActions: "play reverse play reverse" } }
       );
     }
 
@@ -39,14 +39,14 @@ export default function ProductsSection() {
       { opacity: 0, y: 80, rotateX: -10, scale: 0.9 },
       { opacity: 1, y: 0, rotateX: 0, scale: 1, stagger: { amount: 0.6, from: "start" },
         duration: 0.9, ease: "back.out(1.4)",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" } }
+        scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" } }
     );
 
     // Icon bounce on scroll
     gsap.fromTo(ref.current.querySelectorAll(".product-icon"),
       { scale: 0, rotate: -90 },
       { scale: 1, rotate: 0, stagger: 0.1, duration: 0.6, ease: "back.out(3)",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" }, delay: 0.4 }
+        scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" }, delay: 0.4 }
     );
   }, []);
 

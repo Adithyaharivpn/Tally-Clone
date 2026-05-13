@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NumberTicker from "@/components/ui/number-ticker";
 import { Award, Users, Globe, Headphones } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const stats = [
   { icon: <Award className="w-6 h-6" />, value: 30, suffix: "+", label: "Years Experience" },
@@ -17,11 +18,8 @@ const stats = [
 export default function StatsSection() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!ref.current) return;
-
-    const cards = ref.current.querySelectorAll(".stat-card");
-    const icons = ref.current.querySelectorAll(".stat-icon");
 
     // Fade in the container
     gsap.fromTo(
@@ -32,26 +30,28 @@ export default function StatsSection() {
         y: 0,
         duration: 0.8,
         ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 85%" },
+        scrollTrigger: { trigger: ref.current, start: "top 85%", toggleActions: "play reverse play reverse" },
       }
     );
 
     // Stagger the stat values
     const values = ref.current.querySelectorAll(".stat-value");
-    gsap.fromTo(
-      values,
-      { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1,
-        scale: 1,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "back.out(1.5)",
-        scrollTrigger: { trigger: ref.current, start: "top 85%" },
-        delay: 0.2,
-      }
-    );
-  }, []);
+    if (values.length > 0) {
+      gsap.fromTo(
+        values,
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1,
+          scale: 1,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: "back.out(1.5)",
+          scrollTrigger: { trigger: ref.current, start: "top 85%", toggleActions: "play reverse play reverse" },
+          delay: 0.2,
+        }
+      );
+    }
+  }, { scope: ref });
 
   return (
     <section className="relative -mt-16 sm:-mt-24 z-20 px-4 sm:px-6 lg:px-8">

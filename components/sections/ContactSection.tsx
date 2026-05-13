@@ -1,47 +1,57 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
 import { Spotlight } from "@/components/ui/spotlight";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function ContactSection() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!ref.current) return;
 
     // Left content slide in from left
-    gsap.fromTo(ref.current.querySelectorAll(".contact-left"),
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, stagger: 0.12, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 75%" } }
-    );
+    const leftContent = ref.current.querySelectorAll(".contact-left");
+    if (leftContent.length > 0) {
+      gsap.fromTo(leftContent,
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, stagger: 0.12, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ref.current, start: "top 75%", toggleActions: "play reverse play reverse" } }
+      );
+    }
 
     // Right form slide in from right
     gsap.fromTo(".contact-form",
       { opacity: 0, x: 50, rotateY: -5 },
       { opacity: 1, x: 0, rotateY: 0, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 75%" } }
+        scrollTrigger: { trigger: ref.current, start: "top 75%", toggleActions: "play reverse play reverse" } }
     );
 
     // Contact info icons pulse
-    gsap.fromTo(ref.current.querySelectorAll(".contact-icon"),
-      { scale: 0, rotate: -180 },
-      { scale: 1, rotate: 0, stagger: 0.12, duration: 0.6, ease: "back.out(2.5)",
-        scrollTrigger: { trigger: ref.current, start: "top 75%" }, delay: 0.3 }
-    );
+    const icons = ref.current.querySelectorAll(".contact-icon");
+    if (icons.length > 0) {
+      gsap.fromTo(icons,
+        { scale: 0, rotate: -180 },
+        { scale: 1, rotate: 0, stagger: 0.12, duration: 0.6, ease: "back.out(2.5)",
+          scrollTrigger: { trigger: ref.current, start: "top 75%", toggleActions: "play reverse play reverse" }, delay: 0.3 }
+      );
+    }
 
     // Form fields staggered appearance
-    gsap.fromTo(ref.current.querySelectorAll(".form-field"),
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, stagger: 0.1, duration: 0.5, ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 70%" }, delay: 0.5 }
-    );
-  }, []);
+    const formFields = ref.current.querySelectorAll(".form-field");
+    if (formFields.length > 0) {
+      gsap.fromTo(formFields,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, stagger: 0.1, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: ref.current, start: "top 70%", toggleActions: "play reverse play reverse" }, delay: 0.5 }
+      );
+    }
+  }, { scope: ref });
 
   return (
     <section id="contact" className="py-24 lg:py-32 bg-(--background)" ref={ref}>

@@ -1,9 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -15,9 +20,36 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!navRef.current) return;
+
+    const showAnim = gsap.from(navRef.current, { 
+      yPercent: -150,
+      paused: true,
+      duration: 0.3,
+      ease: "power2.out"
+    }).progress(1);
+
+    ScrollTrigger.create({
+      start: "top top",
+      end: "max",
+      onUpdate: (self) => {
+        // Show if scrolling up, hide if scrolling down
+        if (self.direction === -1) {
+          showAnim.play();
+        } else if (self.direction === 1 && self.scroll() > 100) {
+          // close mobile menu if scrolling down
+          if (mobileOpen) setMobileOpen(false);
+          showAnim.reverse();
+        }
+      }
+    });
+  }, { scope: navRef, dependencies: [mobileOpen] });
 
   return (
-    <div className="fixed top-4 left-0 right-0 z-50 flex flex-col items-center px-4 w-full">
+    <div ref={navRef} className="fixed top-4 left-0 right-0 z-50 flex flex-col items-center px-4 w-full">
       <header className="w-full max-w-5xl rounded-full border border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 shadow-sm transition-colors duration-500 relative">
         <div className="flex h-14 items-center justify-between px-6">
           {/* Logo */}

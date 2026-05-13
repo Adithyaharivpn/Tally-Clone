@@ -15,7 +15,7 @@ export default function AboutSection() {
     if (!ref.current) return;
     if (visualRef.current) {
       gsap.to(visualRef.current, {
-        y: -40,
+        y: -120,
         scrollTrigger: { trigger: ref.current, start: "top bottom", end: "bottom top", scrub: 1.5 },
       });
     }

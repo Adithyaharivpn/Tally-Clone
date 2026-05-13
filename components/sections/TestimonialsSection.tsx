@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const testimonials = [
   { quote: "From installation to ongoing support, the team provided excellent guidance. Our staff is more confident using Tally, thanks to the detailed training sessions.", name: "Shahid Ali", title: "Operations Head" },
@@ -17,22 +18,25 @@ const testimonials = [
 export default function TestimonialsSection() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!ref.current) return;
 
-    gsap.fromTo(ref.current.querySelectorAll(".testi-header"),
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" } }
-    );
+    const headers = ref.current.querySelectorAll(".testi-header");
+    if (headers.length > 0) {
+      gsap.fromTo(headers,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" } }
+      );
+    }
 
     // Decorative gradient orb animation
     gsap.fromTo(".testi-orb",
       { scale: 0.5, opacity: 0 },
       { scale: 1, opacity: 1, duration: 1.5, ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 80%" } }
+        scrollTrigger: { trigger: ref.current, start: "top 80%", toggleActions: "play reverse play reverse" } }
     );
-  }, []);
+  }, { scope: ref });
 
   return (
     <section id="testimonials" className="relative py-24 lg:py-32 bg-(--muted) overflow-hidden" ref={ref}>
